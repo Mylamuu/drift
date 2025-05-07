@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"strings"
 )
 
@@ -31,7 +30,6 @@ func (s *stringSliceFlag) Set(value string) error {
 }
 
 func loadConfig(args []string) (Config, error) {
-	fmt.Println(args)
 	fs := flag.NewFlagSet("drift", flag.ContinueOnError)
 
 	port := fs.Int("port", 8080, "Port to listen on")
