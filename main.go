@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Mylamuu/drift/internal/http"
 	"github.com/Mylamuu/drift/internal/storage"
 )
 
@@ -40,5 +41,18 @@ func main() {
 	if err := storage.Init(config.StoragePath); err != nil {
 		slog.Error("Failed to initialize storage.", "error", err)
 		os.Exit(1)
+	}
+
+	httpConfig := http.Config{
+		BindAddress:      config.BindAddress,
+		Port:             config.Port,
+		StoragePath:      config.StoragePath,
+		MaxFileSizeMB:    config.MaxFileSizeMB,
+		AllowedFileTypes: config.AllowedFileTypes,
+	}
+	server := http.NewServer(httpConfig)
+
+	if err := server.Start(); err != nil {
+		slog.Error("HTTP server failed", "error", err)
 	}
 }
