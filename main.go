@@ -5,6 +5,8 @@ import (
 	"log/slog"
 	"os"
 	"strings"
+
+	"github.com/Mylamuu/drift/internal/storage"
 )
 
 func initLogger(logLevel string) {
@@ -33,6 +35,10 @@ func main() {
 	}
 
 	initLogger(config.LogLevel)
+	slog.Debug("Configuration has been loaded", "config", fmt.Sprintf("%+v", config))
 
-	fmt.Println(config)
+	if err := storage.Init(config.StoragePath); err != nil {
+		slog.Error("Failed to initialize storage.", "error", err)
+		os.Exit(1)
+	}
 }
