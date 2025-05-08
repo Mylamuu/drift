@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // Based configuration pattern
@@ -12,8 +13,9 @@ type Config struct {
 	BindAddress      string
 	Port             int
 	StoragePath      string
-	MaxFileSizeMB    int64
+	MaxFileSize      int64
 	AllowedFileTypes []string
+	KeepTime         time.Duration
 }
 
 type Server struct {
@@ -29,8 +31,9 @@ func NewServer(config Config) *Server {
 		router: mux,
 	}
 
+	mux.Handle("POST /api/upload", http.HandlerFunc(server.handleUploadFile))
+
 	// Routes for the future ;P
-	// mux.Handle("/api/upload", http.HandleFunc())
 	// mux.Handle("/api/files/", http.HandleFunc())
 	// mux.Handle("/api/files", http.HandleFunc())
 	// mux.Handle("/f/", http.HandleFunc())

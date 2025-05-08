@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"strings"
+	"time"
 )
 
 type Config struct {
@@ -10,8 +11,9 @@ type Config struct {
 	BindAddress      string
 	LogLevel         string
 	StoragePath      string
-	MaxFileSizeMB    int64
+	MaxFileSize      int64
 	AllowedFileTypes []string
+	KeepTime         time.Duration
 }
 
 type stringSliceFlag []string
@@ -37,6 +39,7 @@ func loadConfig(args []string) (Config, error) {
 	logLevel := fs.String("level", "info", "Logging level: [debug, info, warn, error]")
 	storagePath := fs.String("path", "/tmp/drift", "Path to save uploads to")
 	maxFileSizeMB := fs.Int64("size", 1024, "Maximum file size in MB")
+	keepTime := fs.Duration("keep", time.Hour*24, "Time before deleting uploaded file")
 
 	var allowedFileTypes stringSliceFlag
 	fs.Var(&allowedFileTypes, "allowed", "Comma seperated list of allowed MIME types")
@@ -54,7 +57,8 @@ func loadConfig(args []string) (Config, error) {
 		BindAddress:      *bindAddress,
 		LogLevel:         *logLevel,
 		StoragePath:      *storagePath,
-		MaxFileSizeMB:    *maxFileSizeMB,
+		MaxFileSize:      *maxFileSizeMB * 1024 * 1024,
 		AllowedFileTypes: allowedFileTypes,
+		KeepTime:         *keepTime,
 	}, nil
 }

@@ -47,8 +47,9 @@ func main() {
 		BindAddress:      config.BindAddress,
 		Port:             config.Port,
 		StoragePath:      config.StoragePath,
-		MaxFileSizeMB:    config.MaxFileSizeMB,
+		MaxFileSize:      config.MaxFileSize,
 		AllowedFileTypes: config.AllowedFileTypes,
+		KeepTime:         config.KeepTime,
 	}
 	server := http.NewServer(httpConfig)
 
