@@ -17,7 +17,7 @@ type File struct {
 	ExpiresAt    time.Time `json:"expires_at"`
 	AccessCount  int       `json:"access_count"`
 
-	StoragePath string // Internal path, do not return to user.
+	StoragePath string `json:"-"` // Internal path, do not return to user.
 }
 
 var (
