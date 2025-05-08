@@ -16,6 +16,7 @@ type File struct {
 	UploadedAt   time.Time `json:"uploaded_at"`
 	ExpiresAt    time.Time `json:"expires_at"`
 	AccessCount  int       `json:"access_count"`
+	DownloadUrl  string    `json:"download_url"`
 
 	StoragePath string `json:"-"` // Internal path, do not return to user.
 }

@@ -34,6 +34,7 @@ func NewServer(config Config) *Server {
 	mux.Handle("POST /api/upload", http.HandlerFunc(server.handleUploadFile))
 	mux.Handle("GET /api/files", http.HandlerFunc(server.handleListFiles))
 	mux.Handle("GET /api/files/{id}", http.HandlerFunc(server.handleGetFileInfo))
+	mux.Handle("GET /download/{id}", http.HandlerFunc(server.handleDownloadFile))
 
 	server.httpServer = &http.Server{
 		Addr:    net.JoinHostPort(config.BindAddress, strconv.Itoa(config.Port)),

@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -85,6 +86,7 @@ func (s *Server) handleUploadFile(w http.ResponseWriter, r *http.Request) {
 		ExpiresAt:    time.Now().Add(s.config.KeepTime),
 		AccessCount:  0,
 		StoragePath:  storage.Path(id),
+		DownloadUrl:  fmt.Sprintf("/download/%s", id),
 	}
 
 	storage.Save(fileMetadata)
