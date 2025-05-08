@@ -74,6 +74,20 @@ func List() []File {
 	return files
 }
 
+func ListExpired() []File {
+	fileStoreLock.Lock()
+	defer fileStoreLock.Unlock()
+
+	files := make([]File, 0)
+	for _, file := range fileStore {
+		if file.ExpiresAt.After(time.Now()) {
+			files = append(files, file)
+		}
+	}
+
+	return files
+}
+
 func Path(id string) string {
 	if baseStoragePath == "" {
 		slog.Error("Storage has not been initialised.")

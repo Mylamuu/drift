@@ -43,6 +43,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	storage.StartCleanupService(config.CleanupInterval, config.StoragePath)
+
 	httpConfig := http.Config{
 		BindAddress:      config.BindAddress,
 		Port:             config.Port,

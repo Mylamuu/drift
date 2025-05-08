@@ -14,6 +14,7 @@ type Config struct {
 	MaxFileSize      int64
 	AllowedFileTypes []string
 	KeepTime         time.Duration
+	CleanupInterval  time.Duration
 }
 
 type stringSliceFlag []string
@@ -40,6 +41,7 @@ func loadConfig(args []string) (Config, error) {
 	storagePath := fs.String("path", "/tmp/drift", "Path to save uploads to")
 	maxFileSizeMB := fs.Int64("size", 1024, "Maximum file size in MB")
 	keepTime := fs.Duration("keep", time.Hour*24, "Time before deleting uploaded file")
+	cleanupInterval := fs.Duration("cleanup", time.Minute*15, "Time between removing expired files")
 
 	var allowedFileTypes stringSliceFlag
 	fs.Var(&allowedFileTypes, "allowed", "Comma seperated list of allowed MIME types")
@@ -60,5 +62,6 @@ func loadConfig(args []string) (Config, error) {
 		MaxFileSize:      *maxFileSizeMB * 1024 * 1024,
 		AllowedFileTypes: allowedFileTypes,
 		KeepTime:         *keepTime,
+		CleanupInterval:  *cleanupInterval,
 	}, nil
 }
