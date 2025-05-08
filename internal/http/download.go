@@ -27,6 +27,9 @@ func (s *Server) handleDownloadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	fileMetadata.AccessCount++
+	storage.Save(fileMetadata)
+
 	w.Header().Set("Content-Type", fileMetadata.ContentType)
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileMetadata.OriginalName))
 
